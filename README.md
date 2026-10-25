@@ -74,6 +74,21 @@ The graph compares male and female literacy trends and highlights the age group 
 | 50–54 | 708 | 52.8 | 657 | 17.6 | 35.2 |
 | 55–59 | 517 | 50.8 | 535 | 15.0 |
 
+## Question 4 — From the Default Graph to an Improved Visualization
+
+### Explanation of the Redesign
+
+The original scatterplot displayed individual literacy observations against age, but the large number of overlapping points made it difficult to identify meaningful patterns.
+
+The redesigned graph introduces three important improvements. First, literacy rates are grouped into five-year age intervals, reducing overcrowding and making trends easier to identify. Second, separate lines and direct labels allow male and female literacy rates to be compared without relying on a legend. Third, the largest gender gap is highlighted, drawing attention to an important finding.
+
+Survey-weighted percentages also provide a more meaningful summary of the population than individual binary observations.
+
+However, grouping the data means that individual differences and variation within each age group are no longer visible.
+
+**Original Graph:** `figures/default.svg`  
+**Redesigned Graph:** `figures/punjab_literacy_trends.svg`
+
 ## Question 5 — Python Verification of Literacy Rates
 
 To check the reliability of the results, the literacy rates for rural Punjab were calculated again using Python. The same age groups, sample restrictions and household weights were used in both R and Python.
