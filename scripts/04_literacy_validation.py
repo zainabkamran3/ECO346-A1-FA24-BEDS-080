@@ -69,3 +69,74 @@ literacy["weighted_lit"] = (
 )
 
 print("Total observations:", len(literacy))
+
+
+# Calculate weighted literacy rates
+rates = (
+    literacy
+    .groupby(["age_band", "sex"], observed=True)
+    .agg(
+        n=("literate", "size"),
+        total_weight=("hhweight", "sum"),
+        literate_weight=("weighted_lit", "sum")
+    )
+    .reset_index()
+)
+
+rates["rate"] = (
+    100 * rates["literate_weight"] /
+    rates["total_weight"]
+)
+
+rates["age_mid"] = rates["age_band"].map(
+    {label: 12 + i * 5
+     for i, label in enumerate(age_labels)}
+).astype(float)
+
+# Create the comparison table
+male = rates[rates["sex"] == 1][
+    ["age_band", "n", "rate"]
+].rename(columns={
+    "n": "Male_N",
+    "rate": "Male_Rate"
+})
+
+female = rates[rates["sex"] == 2][
+    ["age_band", "n", "rate"]
+].rename(columns={
+    "n": "Female_N",
+    "rate": "Female_Rate"
+})
+
+comparison = male.merge(
+    female, on="age_band"
+).sort_values("age_band")
+
+comparison["Gap_pp"] = (
+    comparison["Male_Rate"] -
+    comparison["Female_Rate"]
+)
+
+print("\nPYTHON LITERACY RESULTS\n")
+print(
+    comparison.round(1).to_string(index=False)
+)
+
+# Find the largest gender gap
+largest = comparison.loc[
+    comparison["Gap_pp"].abs().idxmax()
+]
+
+print("\nLargest gap:", largest["age_band"])
+print("Gap:", round(largest["Gap_pp"], 1), "pp")
+
+# Compare female literacy at ages 15-19
+female_15_19 = comparison.loc[
+    comparison["age_band"] == "15-19",
+    "Female_Rate"
+].iloc[0]
+
+print(
+    "Female literacy (15-19):",
+    round(female_15_19, 1), "%"
+)
