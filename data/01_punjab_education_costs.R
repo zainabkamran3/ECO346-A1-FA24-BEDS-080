@@ -33,3 +33,54 @@ students <- subset(
 )
 
 cat("Number of students:", nrow(students), "\n")
+
+
+# Calculate weighted percentiles
+weighted_percentile <- function(x, w, p) {
+  order_index <- order(x)
+  
+  x <- x[order_index]
+  w <- w[order_index]
+  
+  cumulative <- cumsum(w) / sum(w)
+  
+  x[which(cumulative >= p)[1]]
+}
+
+student_count <- nrow(students)
+
+unweighted_median <- median(students$ed_total)
+
+weighted_median <- weighted_percentile(
+  students$ed_total, students$hhweight, 0.50
+)
+
+p10 <- weighted_percentile(
+  students$ed_total, students$hhweight, 0.10
+)
+
+p90 <- weighted_percentile(
+  students$ed_total, students$hhweight, 0.90
+)
+
+spending_ratio <- p90 / p10
+
+# Select spending range for histogram
+graph_data <- subset(
+  students,
+  ed_total >= 100 & ed_total <= 1000000
+)
+
+excluded <- student_count - nrow(graph_data)
+
+# Print the calculated statistics
+cat("\nRURAL PUNJAB - EDUCATION SPENDING\n")
+cat("Students:", student_count, "\n")
+cat("Unweighted median:", unweighted_median, "\n")
+cat("Weighted median:", weighted_median, "\n")
+cat("Weighted P10:", p10, "\n")
+cat("Weighted P90:", p90, "\n")
+cat("P90/P10 ratio:",
+    sprintf("%.2f", spending_ratio), "\n")
+cat("Excluded observations:", excluded, "\n")
+
