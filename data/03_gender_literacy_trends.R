@@ -43,3 +43,70 @@ literacy$age_band <- cut(
 
 cat("Total literacy observations:",
     nrow(literacy), "\n")
+
+# Weighted number of literate people
+literacy$weighted_lit <- literacy$literate *
+  literacy$hhweight
+
+# Count each observation
+literacy$n <- 1
+
+# Summarize by age group and sex
+rates <- aggregate(
+  cbind(weighted_lit, hhweight, n) ~ age_band + sex,
+  data = literacy,
+  FUN = sum
+)
+
+# Calculate weighted literacy percentage
+rates$rate <- 100 * rates$weighted_lit /
+  rates$hhweight
+
+# Give names to the two groups
+rates$gender <- ifelse(
+  rates$sex == 1, "Male", "Female"
+)
+
+# Assign midpoints to age bands
+rates$age_mid <- seq(12, 62, 5)[
+  match(as.character(rates$age_band), age_labels)
+]
+
+# Convert to a wide table for comparison
+comparison <- reshape(
+  rates[, c("age_band", "gender", "n", "rate")],
+  idvar = "age_band",
+  timevar = "gender",
+  direction = "wide"
+)
+
+comparison <- comparison[
+  match(age_labels, as.character(comparison$age_band)),
+]
+
+# Calculate the gender gap in percentage points
+comparison$gap <- comparison$rate.Male -
+  comparison$rate.Female
+
+# Find the largest absolute difference
+largest_gap <- comparison[
+  which.max(abs(comparison$gap)), 
+]
+
+# Print the age-band table
+results_table <- data.frame(
+  Age_Group = as.character(comparison$age_band),
+  Male_N = comparison$n.Male,
+  Male_Rate = round(comparison$rate.Male, 1),
+  Female_N = comparison$n.Female,
+  Female_Rate = round(comparison$rate.Female, 1),
+  Gap_pp = round(comparison$gap, 1)
+)
+
+print(results_table, row.names = FALSE)
+
+cat("\nLargest gender gap:",
+    as.character(largest_gap$age_band), "\n")
+
+cat("Gap in percentage points:",
+    round(largest_gap$gap, 1), "\n")
