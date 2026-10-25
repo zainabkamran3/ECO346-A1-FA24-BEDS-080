@@ -140,3 +140,103 @@ print(
     "Female literacy (15-19):",
     round(female_15_19, 1), "%"
 )
+
+# Plot literacy trends using Python
+fig, ax = plt.subplots(figsize=(11, 7))
+
+colors = {
+    1: "#333333",
+    2: "#B07859"
+}
+
+for sex, label in [(1, "Male"), (2, "Female")]:
+    group = rates[rates["sex"] == sex].sort_values(
+        "age_mid"
+    )
+
+    ax.plot(
+        group["age_mid"],
+        group["rate"],
+        color=colors[sex],
+        linewidth=2
+    )
+
+    for _, row in group.iterrows():
+        ax.scatter(
+            row["age_mid"],
+            row["rate"],
+            s=48,
+            facecolors=(
+                "white" if row["n"] < 30
+                else colors[sex]
+            ),
+            edgecolors=colors[sex],
+            zorder=3
+        )
+
+    # Label the line directly
+    last = group.iloc[-1]
+    ax.text(
+        64, last["rate"], label,
+        color=colors[sex],
+        fontsize=11,
+        fontweight="bold",
+        va="center"
+    )
+
+# Highlight the largest gender gap
+gap_age = (
+    12 + age_labels.index(str(largest["age_band"])) * 5
+)
+
+ax.vlines(
+    gap_age,
+    largest["Female_Rate"],
+    largest["Male_Rate"],
+    colors="gray",
+    linestyles="dashed"
+)
+
+ax.text(
+    0.98, 0.96,
+    f"Largest gap: {largest['age_band']}\n"
+    f"{largest['Gap_pp']:.1f} percentage points",
+    transform=ax.transAxes,
+    ha="right",
+    va="top",
+    fontsize=10
+)
+
+ax.set_title(
+    "Literacy across age groups in rural Punjab",
+    fontsize=15,
+    fontweight="bold"
+)
+
+ax.set_xlabel("Age group")
+ax.set_ylabel("Weighted literacy rate (%)")
+
+ax.set_xticks(list(range(12, 63, 5)))
+ax.set_xticklabels(age_labels, rotation=45)
+
+ax.set_xlim(10, 71)
+ax.set_ylim(0, 100)
+ax.grid(axis="y", alpha=0.2)
+
+fig.text(
+    0.10, 0.02,
+    "Source: PSLM | Weight: hhweight | "
+    "Hollow points indicate N < 30",
+    fontsize=9
+)
+
+fig.tight_layout(rect=(0, 0.04, 1, 1))
+
+# Save Python figure
+output = root / "figures/literacy_python_check.svg"
+output.parent.mkdir(exist_ok=True)
+
+fig.savefig(output, format="svg")
+plt.show()
+
+print("Python graph saved:", output)
