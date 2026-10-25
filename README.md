@@ -46,6 +46,30 @@ A weighted histogram was created using a logarithmic scale to make differences i
 - **P90/P10 ratio:** [Enter result]
 - **Excluded observations:** [Enter result]
 
-### Interpretation
+## Question 3 — Gender Differences in Literacy Across Age Groups
 
-[Add a short interpretation based on the actual results, explaining the difference between typical and higher education spending.]
+### Overview
+
+This analysis examines literacy differences between males and females in rural Punjab. Individuals aged 10–64 were divided into five-year age groups, and literacy rates were calculated using household survey weights.
+
+The graph compares male and female literacy trends and highlights the age group with the largest gender gap.
+
+**Total observations:** 24,630
+
+**R Script:** `scripts/03_gender_literacy_trends.R`  
+**Figure:** `figures/punjab_literacy_trends.svg`
+
+### Literacy Rates by Age Group
+
+| Age Group | Male N | Male Literacy (%) | Female N | Female Literacy (%) | Gap (pp) |
+|---|---:|---:|---:|---:|---:|
+| 10–14 | 2209 | 80.4 | 2133 | 74.5 | 5.9 |
+| 15–19 | 1922 | 79.8 | 1758 | 73.1 | 6.7 |
+| 20–24 | 1449 | 74.9 | 1574 | 63.1 | 11.8 |
+| 25–29 | 1201 | 68.1 | 1386 | 52.9 | 15.2 |
+| 30–34 | 1037 | 65.9 | 1176 | 45.4 | 20.5 |
+| 35–39 | 1006 | 63.5 | 1194 | 39.6 | 23.9 |
+| 40–44 | 843 | 61.3 | 903 | 30.7 | 30.6 |
+| 45–49 | 737 | 56.5 | 776 | 25.9 | 30.6 |
+| 50–54 | 708 | 52.8 | 657 | 17.6 | 35.2 |
+| 55–59 | 517 | 50.8 | 535 | 15.0 |
