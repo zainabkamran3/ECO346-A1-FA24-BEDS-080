@@ -34,3 +34,23 @@ literacy_data <- subset(
 )
 
 cat("Literacy sample:", nrow(literacy_data), "\n")
+
+
+# Original scatterplot without redesign
+default_plot <- ggplot(
+  literacy_data,
+  aes(x = age, y = literate)
+) +
+  geom_point()
+
+# Display graph
+print(default_plot)
+
+# Save the original graph
+ggsave(
+  "figures/default.svg",
+  plot = default_plot,
+  width = 9,
+  height = 6
+)
+
