@@ -84,3 +84,82 @@ cat("P90/P10 ratio:",
     sprintf("%.2f", spending_ratio), "\n")
 cat("Excluded observations:", excluded, "\n")
 
+
+# Create weighted spending histogram
+spending_plot <- ggplot(
+  graph_data,
+  aes(x = log10(ed_total), weight = hhweight)
+) +
+  geom_histogram(
+    aes(y = after_stat(density)),
+    binwidth = 0.1,
+    boundary = 2,
+    fill = "grey75",
+    color = "grey30"
+  ) +
+  geom_vline(
+    xintercept = log10(weighted_median),
+    linetype = "dashed",
+    linewidth = 0.8
+  ) +
+  geom_vline(
+    xintercept = log10(p90),
+    linetype = "dashed",
+    color = "grey45",
+    linewidth = 0.8
+  ) +
+  annotate(
+    "label",
+    x = log10(weighted_median),
+    y = Inf,
+    label = paste("Median: Rs", weighted_median),
+    vjust = 1.2,
+    size = 3
+  ) +
+  annotate(
+    "label",
+    x = log10(p90),
+    y = Inf,
+    label = paste("P90: Rs", p90),
+    vjust = 3,
+    size = 3
+  ) +
+  scale_x_continuous(
+    breaks = 2:6,
+    labels = c("100", "1,000", "10,000",
+               "100,000", "1,000,000")
+  ) +
+  coord_cartesian(xlim = c(2, 6)) +
+  labs(
+    title = "Education spending in rural Punjab",
+    subtitle = paste0(
+      "Weighted distribution | P90/P10 = ",
+      sprintf("%.2f", spending_ratio)
+    ),
+    x = "Annual education spending (Rs, log10 scale)",
+    y = "Weighted density per log10 unit",
+    caption = paste0(
+      "Source: PSLM | Weight: hhweight",
+      "\nStudents: ", student_count,
+      " | Excluded: ", excluded
+    )
+  ) +
+  theme_classic(base_size = 12) +
+  theme(
+    plot.title = element_text(face = "bold"),
+    plot.caption = element_text(hjust = 0)
+  )
+
+# Display the graph
+print(spending_plot)
+
+# Save the graph
+ggsave(
+  "figures/punjab_spending_distribution.svg",
+  plot = spending_plot,
+  width = 10,
+  height = 6
+)
+
+cat("Histogram saved successfully.\n")
+
