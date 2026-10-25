@@ -24,3 +24,28 @@ The project uses two datasets provided by the course instructor:
 Both datasets are merged using the household ID (`hhid`).
 
 **Selected Region:** Rural Punjab (Province Code 2, Rural Code 1).
+
+## Question 2 — Education Spending in Rural Punjab
+
+This section examines the distribution of annual education expenditure among students in rural Punjab.
+
+The person and household datasets were merged using `hhid`. Students with positive education spending and valid household weights were included in the analysis.
+
+A weighted histogram was created using a logarithmic scale to make differences in spending easier to observe. The graph also highlights the weighted median and 90th percentile.
+
+**R Script:** `scripts/01_punjab_education_costs.R`  
+**Output Figure:** `figures/punjab_spending_distribution.svg`
+
+### Summary Statistics
+
+- **Total students:** [Enter result]
+- **Unweighted median:** Rs [Enter result]
+- **Weighted median:** Rs [Enter result]
+- **Weighted P10:** Rs [Enter result]
+- **Weighted P90:** Rs [Enter result]
+- **P90/P10 ratio:** [Enter result]
+- **Excluded observations:** [Enter result]
+
+### Interpretation
+
+[Add a short interpretation based on the actual results, explaining the difference between typical and higher education spending.]
