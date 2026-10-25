@@ -73,3 +73,24 @@ The graph compares male and female literacy trends and highlights the age group 
 | 45–49 | 737 | 56.5 | 776 | 25.9 | 30.6 |
 | 50–54 | 708 | 52.8 | 657 | 17.6 | 35.2 |
 | 55–59 | 517 | 50.8 | 535 | 15.0 |
+
+## Question 5 — Python Verification of Literacy Rates
+
+To check the reliability of the results, the literacy rates for rural Punjab were calculated again using Python. The same age groups, sample restrictions and household weights were used in both R and Python.
+
+**Python Script:** `scripts/04_literacy_validation.py`  
+**Figure:** `figures/literacy_python_check.svg`
+
+### Comparison of Results
+
+| Measure | R Result | Python Result |
+|---|---|---|
+| Total observations | 24,630 | [Enter result] |
+| Female literacy (15–19) | 73.1% | [Enter result] |
+| Male literacy (15–19) | 79.8% | [Enter result] |
+| Largest gender gap | 55–59 | [Enter result] |
+| Gap size | 35.8 pp | [Enter result] |
+
+### Method Comparison
+
+R and Python use different functions for grouping and summarizing data, which
