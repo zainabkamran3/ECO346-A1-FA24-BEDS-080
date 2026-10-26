@@ -161,5 +161,5 @@ ggsave(
   height = 6
 )
 
-cat("Histogram saved successfully.\n")
+cat("Histogram saved successfully.\n") 
 
